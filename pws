@@ -1,0 +1,38 @@
+def generate_password(word, num_digits, with_period, with_comma):
+    lower_bound = int(10**(num_digits-1))
+    upper_bound = int(10**num_digits)
+
+    numbers = [str(i) for i in range(lower_bound, upper_bound)]
+
+    passwords = []
+    for number in numbers:
+        password = f"{word}"
+        if num_digits > 0:
+            password += f"{number}"
+        if with_period:
+            password += "."
+        if with_comma:
+            password += ","
+        passwords.append(password)
+
+    return passwords
+
+def generate_all_passwords(word_list):
+    numbers = list(range(1, 10))
+    conditions = [(False, False), (True, False), (False, True)]
+
+    all_passwords = []
+    for word in word_list:
+        for num_digits in range(4):  # For 0 to 3 digits
+            for with_period, with_comma in conditions:
+                passwords = generate_password(word, num_digits, with_period, with_comma)
+                all_passwords.extend(passwords)
+
+    return all_passwords
+
+if __name__ == "__main__":
+    word_list = ["admin", "password","rks"]
+
+    passwords = generate_all_passwords(word_list)
+    for i, password in enumerate(passwords, start=1):
+        print(f"{password}")
